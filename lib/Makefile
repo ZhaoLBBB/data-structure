@@ -7,4 +7,4 @@ LIB_OBJS=${patsubst %.c,%.o,$(LIB_SRCS)}
 lib:$(LIB_OBJS)
 	ar -cr $(LIBRARY_NAME) $^
 clean:
-	rm -rf *.o lib$(LIBRARY_NAME).a 
+	rm -rf *.o *.a 
