@@ -4,8 +4,9 @@
 
 #ifndef	_LINUX_RBTREE_H
 #define	_LINUX_RBTREE_H
-#include <stdio.h>
-
+#ifndef NULL
+#define NULL (void*)0
+#endif
 #ifndef container_of
 #define container_of(ptr, type, member) \
 	((type *) ((char*) ptr - (char*)&(((type *)0)->member)))
