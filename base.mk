@@ -1,6 +1,6 @@
 export
 BASE_DIR=$(shell pwd)
-DEBUG=y
+DEBUG=n
 LIBRARY_NAME=libdatastruct.a
 INC=$(BASE_DIR)/inc
 TEST=$(BASE_DIR)/test

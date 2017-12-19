@@ -100,7 +100,7 @@ int vector_search(const struct vector *vector, const void *key, vector_cmp_func 
 	if(start_index < 0 || start_index > vector->cur_len) return -1;
 	start_pos = vector_Nth_raw(vector, start_index);
 	if(is_sorted){
-		found = bsearch(key, start_pos, vector->elem_size, num, cmp_func);
+		found = bsearch(key, start_pos, num, vector->elem_size, cmp_func);
 	}else{
 		found = lfind(key, start_pos, &num, vector->elem_size, cmp_func);
 	

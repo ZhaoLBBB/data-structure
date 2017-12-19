@@ -1,6 +1,6 @@
 include base.mk
 .PHONY:test lib clean
-test:
+test:lib
 	make -C $(TEST) all
 lib:
 	make -C $(LIB) lib
