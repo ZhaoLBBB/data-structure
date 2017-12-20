@@ -10,6 +10,8 @@ int set_insert(struct set *set, struct set_node *node)
 			new = &parent->rb_left;
 		else if (set->cmp_func(parent, node) < 0)
 			new = &parent->rb_right;
+		else if (set->cmp_func(parent, node) == 0)
+			return 1;
 	}
 	rb_link_node(node, parent, new);
 	rb_insert_color(node, &set->root);

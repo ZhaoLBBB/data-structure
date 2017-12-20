@@ -1,5 +1,4 @@
-#TARGET=set-test rbtree-test list-test vector-test
-TARGET=vector-test
+TARGET=set-test rbtree-test list-test vector-test
 all:$(TARGET)
 %.o:%.c
 	$(CC) -c $(CFLAGS) $^ -o $@

@@ -16,7 +16,6 @@ int main(int argc, char **argv){
     struct list_head *pos, *q;
     unsigned int i;
 
-    struct kool_list mylist;
     for(i = 0; i <= MAX_NODES - 1; i++){
         tmp= (struct kool_list *)malloc(sizeof(struct kool_list));
 	tmp->val = i;
