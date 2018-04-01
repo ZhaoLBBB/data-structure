@@ -1,6 +1,6 @@
 #ifndef VECTOR_H_
 #define VECTOR_H_
-#include <linux/types.h>
+//#include <linux/types.h>
 #ifndef NULL
 #define NULL (void*)0
 #endif
