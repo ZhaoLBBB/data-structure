@@ -1,5 +1,5 @@
-#ifndef _LINUX_LIST_H
-#define _LINUX_LIST_H
+#ifndef LIST_H_
+#define LIST_H_
 #include "types.h"
 /*
  * Simple doubly linked list implementation.

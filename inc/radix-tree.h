@@ -481,3 +481,23 @@ static inline void **radix_tree_next_slot(void **slot, struct radix_tree_iter *i
 	for (slot = radix_tree_iter_init(iter, start) ;			\
 	     slot || (slot = radix_tree_next_chunk(root, iter, 0)) ;	\
 	     slot = radix_tree_next_slot(slot, iter, 0))
+
+/**
+ * radix_tree_for_each_tagged - iterate over tagged slots
+ *
+ * @slot:	the void** variable for pointer to slot
+ * @root:	the struct radix_tree_root pointer
+ * @iter:	the struct radix_tree_iter pointer
+ * @start:	iteration starting index
+ * @tag:	tag index
+ *
+ * @slot points to radix tree slot, @iter->index contains its index.
+ */
+#define radix_tree_for_each_tagged(slot, root, iter, start, tag)	\
+	for (slot = radix_tree_iter_init(iter, start) ;			\
+	     slot || (slot = radix_tree_next_chunk(root, iter,		\
+			      RADIX_TREE_ITER_TAGGED | tag)) ;		\
+	     slot = radix_tree_next_slot(slot, iter,			\
+				RADIX_TREE_ITER_TAGGED | tag))
+
+#endif /* _LINUX_RADIX_TREE_H */

@@ -2,9 +2,10 @@
   Red Black Trees
 */
 
-#ifndef	_LINUX_RBTREE_H
-#define	_LINUX_RBTREE_H
+#ifndef	RBTREE_H
+#define	RBTREE_H
 #include "types.h"
+
 struct rb_node {
 	unsigned long  __rb_parent_color;
 	struct rb_node *rb_right;
@@ -22,7 +23,7 @@ struct rb_root {
 #define RB_ROOT	(struct rb_root) { NULL, }
 #define	rb_entry(ptr, type, member) container_of(ptr, type, member)
 
-#define RB_EMPTY_ROOT(root)  (READ_ONCE((root)->rb_node) == NULL)
+#define RB_EMPTY_ROOT(root)  (((root)->rb_node) == NULL)
 
 /* 'empty' nodes are nodes that are known not to be inserted in an rbtree */
 #define RB_EMPTY_NODE(node)  \

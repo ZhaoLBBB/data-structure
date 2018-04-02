@@ -24,4 +24,8 @@
 #define DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))    
 #define BITS_TO_LONGS(nr)   DIV_ROUND_UP(nr, 8/*CHAR_BIT*/ * BITS_PER_LONG)
 
+typedef unsigned int bool;
+#define true 1
+#define false 0
+
 #endif

@@ -2,8 +2,8 @@
   Red Black Trees
 */
 
-#ifndef _LINUX_RBTREE_AUGMENTED_H
-#define _LINUX_RBTREE_AUGMENTED_H
+#ifndef RBTREE_AUGMENTED_H
+#define RBTREE_AUGMENTED_H
 
 #include "rbtree.h"
 

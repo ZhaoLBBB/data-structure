@@ -1,4 +1,3 @@
-
 #include "rbtree_augmented.h"
 #include <stdio.h>
 #include <stdlib.h>

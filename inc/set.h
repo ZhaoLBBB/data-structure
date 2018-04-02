@@ -1,7 +1,7 @@
 #ifndef SET_H_
 #define SET_H_
 #include "rbtree_augmented.h"
-
+#include "types.h"
 /*
  *we use red black tree to implement set
  */
@@ -35,7 +35,7 @@ static inline void set_init(struct set *set, set_cmp_func cmp_func, set_copy_fun
 	set->destroy_func = destroy_func;
 	set->num = 0;
 }
-#define	set_entry(ptr, type, member) rb_entry(ptr, type, member)
+#define	set_entry(ptr, type, member) container_of(ptr, type, member)
 #define set_for_each(pos, set) \
 	for (pos = rb_first(&(set)->root); pos; pos = rb_next(pos))
 
