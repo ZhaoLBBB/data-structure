@@ -4,14 +4,7 @@
 
 #ifndef	_LINUX_RBTREE_H
 #define	_LINUX_RBTREE_H
-#ifndef NULL
-#define NULL (void*)0
-#endif
-#ifndef container_of
-#define container_of(ptr, type, member) \
-	((type *) ((char*) ptr - (char*)&(((type *)0)->member)))
-#endif
-
+#include "types.h"
 struct rb_node {
 	unsigned long  __rb_parent_color;
 	struct rb_node *rb_right;

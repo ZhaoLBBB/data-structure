@@ -1,6 +1,6 @@
 #ifndef _LINUX_LIST_H
 #define _LINUX_LIST_H
-
+#include "types.h"
 /*
  * Simple doubly linked list implementation.
  *
@@ -10,14 +10,6 @@
  * generate better code by using them directly rather than
  * using the generic single-entry routines.
  */
-#ifndef container_of
-#define container_of(ptr, type, member) \
-	(type*)((char*)ptr - (char*)&(((type*)0)->member))
-#endif
-
-#ifndef NULL
-#define NULL (void*)0
-#endif
 
 struct list_head {
 	struct list_head *prev;

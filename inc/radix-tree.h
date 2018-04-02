@@ -18,15 +18,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-#ifndef _LINUX_RADIX_TREE_H
-#define _LINUX_RADIX_TREE_H
-
-#ifndef ARRAY_SIZE
-#define ARRAY_SIZE(x)   (sizeof(x)/sizeof(x[0]))
-#endif
-
-//TODO: define based on arch Can be more efficient
-#define BIT_PER_LONG    (8 /* CHAR_BIT*/ * sizeof(unsigned long) )  
+#ifndef RADIX_TREE_H
+#define RADIX_TREE_H
+#include "types.h"
+#include "list.h"
 /*
  * The bottom two bits of the slot determine how the remaining bits in the
  * slot are interpreted:
@@ -65,9 +60,7 @@ static inline bool radix_tree_is_internal_node(void *ptr)
 
 #define RADIX_TREE_MAX_TAGS 3
 
-#ifndef RADIX_TREE_MAP_SHIFT
-#define RADIX_TREE_MAP_SHIFT	(CONFIG_BASE_SMALL ? 4 : 6)
-#endif
+#define RADIX_TREE_MAP_SHIFT	6
 
 #define RADIX_TREE_MAP_SIZE	(1UL << RADIX_TREE_MAP_SHIFT)
 #define RADIX_TREE_MAP_MASK	(RADIX_TREE_MAP_SIZE-1)
@@ -102,18 +95,14 @@ struct radix_tree_node {
 };
 
 /* We only use this API in user mode so GFP shift is zero */
-typedef unsigned long gfp_t;
-#define __GFP_BITS_SHIFT   0
-#define ROOT_IS_IDR	((1 << __GFP_BITS_SHIFT))
-#define ROOT_TAG_SHIFT	(__GFP_BITS_SHIFT + 1)
 
 struct radix_tree_root {
-	gfp_t			gfp_mask;
+	unsigned long   tag_mask;
 	struct radix_tree_node *rnode;
 };
 
 #define RADIX_TREE_INIT(mask)	{			\
-	.gfp_mask = (mask),						\
+	.tag_mask = (mask),						\
 	.rnode = NULL,							\
 }
 
@@ -122,7 +111,7 @@ struct radix_tree_root {
 
 #define INIT_RADIX_TREE(root)					\
 do {									\
-	(root)->gfp_mask = 0;					\
+	(root)->tag_mask = 0;					\
 	(root)->rnode = NULL;						\
 } while (0)
 
@@ -259,7 +248,6 @@ unsigned int radix_tree_gang_lookup(const struct radix_tree_root *, void **resul
 unsigned int radix_tree_gang_lookup_slot(const struct radix_tree_root *, void ***results, 
 			unsigned long *indices, unsigned long first_index, unsigned int max_items);
 
-void radix_tree_init(void);
 
 void *radix_tree_tag_set(struct radix_tree_root *, unsigned long index, unsigned int tag);
 
@@ -371,16 +359,14 @@ radix_tree_iter_find(const struct radix_tree_root *root,
  * radix_tree_deref_retry() returns true.  If so, call this function
  * and continue the iteration.
  */
-static inline __must_check
-void **radix_tree_iter_retry(struct radix_tree_iter *iter)
+static inline void **radix_tree_iter_retry(struct radix_tree_iter *iter)
 {
 	iter->next_index = iter->index;
 	iter->tags = 0;
 	return NULL;
 }
 
-static inline unsigned long
-__radix_tree_iter_add(struct radix_tree_iter *iter, unsigned long slots)
+static inline unsigned long __radix_tree_iter_add(struct radix_tree_iter *iter, unsigned long slots)
 {
 	return iter->index + (slots << iter_shift(iter));
 }
@@ -450,7 +436,7 @@ static inline void **radix_tree_next_slot(void **slot, struct radix_tree_iter *i
 			goto found;
 		}
 		if (!(flags & RADIX_TREE_ITER_CONTIG)) {
-			unsigned offset = __ffs(iter->tags);
+			unsigned offset = ffs(iter->tags);
 
 			iter->tags >>= offset++;
 			iter->index = __radix_tree_iter_add(iter, offset);
