@@ -22,6 +22,7 @@
 #define RADIX_TREE_H
 #include "types.h"
 #include "list.h"
+#include "bitops.h"
 /*
  * The bottom two bits of the slot determine how the remaining bits in the
  * slot are interpreted:
@@ -270,6 +271,11 @@ int radix_tree_tagged(const struct radix_tree_root *, unsigned int tag);
 int radix_tree_split(struct radix_tree_root *, unsigned long index, unsigned new_order);
 
 int radix_tree_join(struct radix_tree_root *, unsigned long index, unsigned new_order, void *);
+
+#ifdef DEBUG
+/*For debug*/
+void radix_tree_dump(struct radix_tree_root *root);
+#endif
 
 enum {
 	RADIX_TREE_ITER_TAG_MASK = 0x0f,	/* tag index in lower nybble */

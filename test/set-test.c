@@ -27,7 +27,7 @@ static void string_destroy_func(struct set_node *elem)
 	struct set_string *node;
 	node = set_entry(elem, struct set_string, node);
 #ifdef DEBUG
-	printf("free node val = %d\n", node->val);
+//	printf("free node val = %d\n", node->val);
 #endif
 	if(!node->name) free(node->name);
 	free(node);

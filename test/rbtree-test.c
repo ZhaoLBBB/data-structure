@@ -1,4 +1,6 @@
 #include "rbtree_augmented.h"
+#include "rbtree.h"
+#include "types.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -48,8 +50,7 @@ static inline unsigned int augment_recompute(struct test_node *node)
 {
 	unsigned int max = node->val, child_augmented;
 	if (node->rb.rb_left) {
-		child_augmented = rb_entry(node->rb.rb_left, struct test_node,
-					   rb)->augmented;
+		child_augmented = rb_entry(node->rb.rb_left, struct test_node, rb)->augmented;
 		if (max < child_augmented)
 			max = child_augmented;
 	}

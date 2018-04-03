@@ -1,4 +1,4 @@
-TARGET=rbtree-test list-test  set-test vector-test
+TARGET=list-test rbtree-test  set-test vector-test radix-tree-test
 all:$(TARGET)
 %.o:%.c
 	$(CC) -c $(CFLAGS) $^ -o $@
@@ -9,6 +9,8 @@ list-test:list-test.o
 set-test:set-test.o
 	$(CC) $^ $(LDFLAGS)  -o $@
 vector-test:vector-test.o
+	$(CC)  $^ $(LDFLAGS) -o $@
+radix-tree-test:radix-tree-test.o
 	$(CC)  $^ $(LDFLAGS) -o $@
 clean:
 	rm -rf *.o $(TARGET)

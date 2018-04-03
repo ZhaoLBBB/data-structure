@@ -249,7 +249,7 @@ static void dump_node(struct radix_tree_node *node, unsigned long index)
 }
 
 /* For debug */
-static void radix_tree_dump(struct radix_tree_root *root)
+void radix_tree_dump(struct radix_tree_root *root)
 {
 	printf("radix root: %p rnode %p tags %x\n",
 			root, root->rnode,
@@ -609,7 +609,8 @@ static inline int insert_entries(struct radix_tree_node *node,
 					if (tag_get(node, tag, offset + i))
 						tags |= 1 << tag;
 			} else
-				return -EEXIST;
+				return -1;
+			//	return -EEXIST;
 		}
 	}
 
@@ -809,7 +810,7 @@ static inline void replace_sibling_entries(struct radix_tree_node *node,
 static void replace_slot(void  **slot, void *item,
 		struct radix_tree_node *node, int count, int exceptional)
 {
-	if (WARN_ON_ONCE(radix_tree_is_internal_node(item)))
+	if (radix_tree_is_internal_node(item))
 		return;
 
 	if (node && (count || exceptional)) {
@@ -863,8 +864,8 @@ void __radix_tree_replace(struct radix_tree_root *root,
 	 * deleting entries, but that needs accounting against the
 	 * node unless the slot is root->rnode.
 	 */
-	WARN_ON_ONCE(!node && (slot != (void **)&root->rnode) &&
-			(count || exceptional));
+//	WARN_ON_ONCE(!node && (slot != (void **)&root->rnode) &&
+//			(count || exceptional));
 	replace_slot(slot, item, node, count, exceptional);
 
 	if (!node)
@@ -936,7 +937,7 @@ int radix_tree_join(struct radix_tree_root *root, unsigned long index,
 	void  **slot;
 	int error;
 
-	BUG_ON(radix_tree_is_internal_node(item));
+//	BUG_ON(radix_tree_is_internal_node(item));
 
 	error = __radix_tree_create(root, index, order, &node, &slot);
 	if (!error)
@@ -973,9 +974,11 @@ int radix_tree_split(struct radix_tree_root *root, unsigned long index,
 	unsigned n, tag, tags = 0;
 
 	if (!__radix_tree_lookup(root, index, &parent, &slot))
-		return -ENOENT;
+		return -1;
+	//	return -ENOENT;
 	if (!parent)
-		return -ENOENT;
+		return -1;
+	//	return -ENOENT;
 
 	offset = get_slot_offset(parent, slot);
 
@@ -1027,7 +1030,7 @@ int radix_tree_split(struct radix_tree_root *root, unsigned long index,
 
 		n = insert_entries(node, &node->slots[offset],
 					RADIX_TREE_RETRY, order, false);
-		BUG_ON(n > RADIX_TREE_MAP_SIZE);
+	//	BUG_ON(n > RADIX_TREE_MAP_SIZE);
 
 		for (tag = 0; tag < RADIX_TREE_MAX_TAGS; tag++)
 			if (tags & (1 << tag))
@@ -1049,8 +1052,8 @@ int radix_tree_split(struct radix_tree_root *root, unsigned long index,
 
  nomem:
 	/* TODO: free all the allocated nodes */
-	WARN_ON(1);
-	return -ENOMEM;
+//	WARN_ON(1);
+	return -1;
 }
 #endif
 
@@ -1098,7 +1101,7 @@ void *radix_tree_tag_set(struct radix_tree_root *root,
 
 		parent = entry_to_node(node);
 		offset = radix_tree_descend(parent, &node, index);
-		BUG_ON(!node);
+	//	BUG_ON(!node);
 
 		if (!tag_get(parent, tag, offset))
 			tag_set(parent, tag, offset);
@@ -1289,8 +1292,7 @@ static void **skip_siblings(struct radix_tree_node **nodep,
 	return NULL;
 }
 
-void  **__radix_tree_next_slot(void **slot,
-				struct radix_tree_iter *iter, unsigned flags)
+void  **__radix_tree_next_slot(void **slot, struct radix_tree_iter *iter, unsigned flags)
 {
 	unsigned tag = flags & RADIX_TREE_ITER_TAG_MASK;
 	struct radix_tree_node *node = *slot;
@@ -1568,7 +1570,7 @@ radix_tree_gang_lookup_tag(const struct radix_tree_root *root, void **results,
 	void  **slot;
 	unsigned int ret = 0;
 
-	if (unlikely(!max_items))
+	if ((!max_items))
 		return 0;
 
 	radix_tree_for_each_tagged(slot, root, &iter, first_index, tag) {
@@ -1607,7 +1609,7 @@ radix_tree_gang_lookup_tag_slot(const struct radix_tree_root *root,
 	void **slot;
 	unsigned int ret = 0;
 
-	if (unlikely(!max_items))
+	if ((!max_items))
 		return 0;
 
 	radix_tree_for_each_tagged(slot, root, &iter, first_index, tag) {
