@@ -1,2 +1,5 @@
-porting linux kernel link list and red black tree to userspace.
-Using red black tree to implement set.
+porting linux kernel data structure to userspace. Very efficient and memory saving
+red-black tree
+radix tree
+list
+
