@@ -6,6 +6,7 @@
  *we use red black tree to implement set
  */
 #ifdef DEBUG
+#include <stdio.h>
 #define SET_ERROR   printf
 #else
 static inline  void SET_ERROR(char *fmt, ...){};

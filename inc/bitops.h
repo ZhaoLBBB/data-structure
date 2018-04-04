@@ -97,7 +97,7 @@ static inline int test_bit(int nr, const volatile unsigned long *addr)
 {
 	return 1UL & (addr[BIT_WORD(nr)] >> (nr & (BITS_PER_LONG-1)));
 }
-
+#if 0
 /**
  * __ffs - find first bit in word.
  * @word: The word to search
@@ -134,7 +134,6 @@ static inline unsigned long ffs(unsigned long word)
 		num += 1;
 	return num;
 }
-
 /*
  * ffz - find first zero in word.
  * @word: The word to search
@@ -142,11 +141,15 @@ static inline unsigned long ffs(unsigned long word)
  * Undefined if no zero exists, so code should check against ~0UL first.
  */
 #define ffz(x)  ffs(~(x))
+#endif
 
 static inline void bitmap_fill(unsigned long *dst, unsigned int nbits)
 {
-	unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);
-	memset(dst, 0xff, len);
+	unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long), i;
+	char *tmp = (char *)dst;
+	for(i = 0; i < len; i++){
+		*tmp++ = 0xff;
+	}
 }
 
 #endif

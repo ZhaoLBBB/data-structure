@@ -23,8 +23,9 @@
  */
 
 #include "radix-tree.h"
-
-
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 /*
  * The radix tree is variable-height, so an insert operation not only has
  * to build the branch to its corresponding item, it also has to build the
@@ -129,11 +130,6 @@ static inline int root_tag_get(const struct radix_tree_root *root, unsigned tag)
 	return (int)root->tag_mask & (1UL << (tag));
 }
 
-static inline unsigned root_tags_get(const struct radix_tree_root *root)
-{
-	return (unsigned)root->tag_mask;
-}
-
 
 /*
  * Returns 1 if any slot in the node has this tag set.
@@ -148,11 +144,6 @@ static inline int any_tag_set(const struct radix_tree_node *node,
 			return 1;
 	}
 	return 0;
-}
-
-static inline void all_tag_set(struct radix_tree_node *node, unsigned int tag)
-{
-	bitmap_fill(node->tags[tag], RADIX_TREE_MAP_SIZE);
 }
 
 /**
@@ -208,13 +199,6 @@ static inline unsigned long node_maxindex(const struct radix_tree_node *node)
 	return shift_maxindex(node->shift);
 }
 
-static unsigned long next_index(unsigned long index,
-				const struct radix_tree_node *node,
-				unsigned long offset)
-{
-	return (index & ~node_maxindex(node)) + (offset << node->shift);
-}
-
 #ifdef  DEBUG
 static void dump_node(struct radix_tree_node *node, unsigned long index)
 {
@@ -251,7 +235,7 @@ static void dump_node(struct radix_tree_node *node, unsigned long index)
 /* For debug */
 void radix_tree_dump(struct radix_tree_root *root)
 {
-	printf("radix root: %p rnode %p tags %x\n",
+	printf("radix root: %p rnode %p tags %lx\n",
 			root, root->rnode,
 			root->tag_mask);
 	if (!radix_tree_is_internal_node(root->rnode))
@@ -542,6 +526,7 @@ int __radix_tree_create(struct radix_tree_root *root, unsigned long index,
 	return 0;
 }
 
+#ifdef CONFIG_RADIX_TREE_MULTIORDER
 /*
  * Free any nodes below this node.  The tree is presumed to not need
  * shrinking, and any user data in the tree is presumed to not need a
@@ -577,7 +562,6 @@ static void radix_tree_free_nodes(struct radix_tree_node *node)
 	}
 }
 
-#ifdef CONFIG_RADIX_TREE_MULTIORDER
 static inline int insert_entries(struct radix_tree_node *node,
 		void **slot, void *item, unsigned order, bool replace)
 {
@@ -689,8 +673,8 @@ int __radix_tree_insert(struct radix_tree_root *root, unsigned long index,
 		return error;
 
 	if (node) {
-		unsigned offset = get_slot_offset(node, slot);
 //TODO:error checking
+//		unsigned offset = get_slot_offset(node, slot);
 //		BUG_ON(tag_get(node, 0, offset));
 //		BUG_ON(tag_get(node, 1, offset));
 //		BUG_ON(tag_get(node, 2, offset));
@@ -822,14 +806,6 @@ static void replace_slot(void  **slot, void *item,
 	*slot = item;
 }
 
-static bool node_tag_get(const struct radix_tree_root *root,
-				const struct radix_tree_node *node,
-				unsigned int tag, unsigned int offset)
-{
-	if (node)
-		return tag_get(node, tag, offset);
-	return root_tag_get(root, tag);
-}
 
 static int calculate_count(struct radix_tree_root *root,
 				struct radix_tree_node *node, void  **slot,
@@ -1737,24 +1713,4 @@ void radix_tree_clear_tags(struct radix_tree_root *root,
 int radix_tree_tagged(const struct radix_tree_root *root, unsigned int tag)
 {
 	return root_tag_get(root, tag);
-}
-
-static void radix_tree_node_ctor(void *arg)
-{
-	struct radix_tree_node *node = arg;
-
-	memset(node, 0, sizeof(*node));
-	INIT_LIST_HEAD(&node->private_list);
-}
-
-static unsigned long __maxindex(unsigned int height)
-{
-	unsigned int width = height * RADIX_TREE_MAP_SHIFT;
-	int shift = RADIX_TREE_INDEX_BITS - width;
-
-	if (shift < 0)
-		return ~0UL;
-	if (shift >= BITS_PER_LONG)
-		return 0UL;
-	return ~0UL >> shift;
 }

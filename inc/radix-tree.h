@@ -23,6 +23,7 @@
 #include "types.h"
 #include "list.h"
 #include "bitops.h"
+#include <string.h>
 /*
  * The bottom two bits of the slot determine how the remaining bits in the
  * slot are interpreted:
