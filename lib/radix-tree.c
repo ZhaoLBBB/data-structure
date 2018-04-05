@@ -169,12 +169,12 @@ radix_tree_find_next_bit(struct radix_tree_node *node, unsigned int tag,
 		addr += offset / BITS_PER_LONG;
 		tmp = *addr >> (offset % BITS_PER_LONG);
 		if (tmp)
-			return ffs(tmp) + offset;
+			return radix_tree_ffs(tmp) + offset;
 		offset = (offset + BITS_PER_LONG) & ~(BITS_PER_LONG - 1);
 		while (offset < RADIX_TREE_MAP_SIZE) {
 			tmp = *++addr;
 			if (tmp)
-				return ffs(tmp) + offset;
+				return radix_tree_ffs(tmp) + offset;
 			offset += BITS_PER_LONG;
 		}
 	}
