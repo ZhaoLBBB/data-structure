@@ -257,6 +257,7 @@ static struct radix_tree_node *radix_tree_node_alloc(struct radix_tree_node *par
 
 	ret = malloc(sizeof(struct radix_tree_node));
 	if (ret) {
+		memset(ret, 0, sizeof(struct radix_tree_node));
 		ret->shift = shift;
 		ret->offset = offset;
 		ret->count = count;
