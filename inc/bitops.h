@@ -103,7 +103,7 @@ static inline void bitmap_fill(unsigned long *dst, unsigned int nbits)
 	unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long), i;
 	char *tmp = (char *)dst;
 	for(i = 0; i < len; i++){
-		*(tmp++)= 0xff;
+		*tmp++= 0xff;
 	}
 }
 

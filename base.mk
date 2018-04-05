@@ -5,7 +5,7 @@ LIBRARY_NAME=libdatastruct.a
 INC=$(BASE_DIR)/inc
 TEST=$(BASE_DIR)/test
 LIB =$(BASE_DIR)/lib
-CFLAGS=-I$(INC) -Wall -O2
+CFLAGS=-I$(INC) -Wall 
 LDFLAGS=-L$(LIB) -ldatastruct
 ifeq ($(strip $(DEBUG)),y)
    CFLAGS += -g -DDEBUG
