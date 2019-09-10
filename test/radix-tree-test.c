@@ -10,7 +10,6 @@ static const long kLargePrime = 1398269;
 static const long kEvenLargerPrime = 3021377;
 #define NUM_TAG10e5  	0
 #define NUM_TAG10e6     1
-
 static long insert_numbers(struct radix_tree_root *root, long n, long d)
 {
 	long k, count;
@@ -92,6 +91,6 @@ static void challenging_test(void)
 }
 int main(int argc, char **argv)
 {
-	challenging_test();	
+	challenging_test();
 	return 0;
 }
