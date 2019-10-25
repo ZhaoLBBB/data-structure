@@ -1,10 +1,78 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 #ifndef BITOPS_H_
 #define BITOPS_H_
-
+#include "types.h"
 
 #define BIT_MASK(nr)		(1UL << ((nr) % BITS_PER_LONG))
 #define BIT_WORD(nr)		((nr) / BITS_PER_LONG)
+
+static unsigned long fls64(unsigned long word)
+{
+    int num = BITS_PER_LONG - 1;
+
+    if (!(word & (~0ul << 32))) {
+        num -= 32;
+        word <<= 32;
+    }
+
+    if (!(word & (~0ul << (BITS_PER_LONG-16)))) {
+        num -= 16;
+        word <<= 16;
+    }
+    if (!(word & (~0ul << (BITS_PER_LONG-8)))) {
+        num -= 8;
+        word <<= 8;
+    }
+    if (!(word & (~0ul << (BITS_PER_LONG-4)))) {
+        num -= 4;
+        word <<= 4;
+    }
+    if (!(word & (~0ul << (BITS_PER_LONG-2)))) {
+        num -= 2;
+        word <<= 2;
+    }
+    if (!(word & (~0ul << (BITS_PER_LONG-1))))
+        num -= 1;
+    return num;
+}
+
+static int fls(unsigned int x)
+{
+    int r = 32;
+
+    if (!x)
+        return 0;
+    if (!(x & 0xffff0000u)) {
+        x <<= 16;
+        r -= 16;
+    }
+    if (!(x & 0xff000000u)) {
+        x <<= 8;
+        r -= 8;
+    }
+    if (!(x & 0xf0000000u)) {
+        x <<= 4;
+        r -= 4;
+    }
+    if (!(x & 0xc0000000u)) {
+        x <<= 2;
+        r -= 2;
+    }
+    if (!(x & 0x80000000u)) {
+        x <<= 1;
+        r -= 1;
+    }
+    return r;
+}
+
+
+static inline unsigned fls_long(unsigned long l)
+{
+    if (sizeof(l) == 4)
+        return fls(l);
+    return fls64(l);
+}
+
 /**
  * set_bit - Set a bit in memory
  * @nr: the bit to set

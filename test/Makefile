@@ -1,4 +1,4 @@
-TARGET=list-test rbtree-test  set-test vector-test radix-tree-test
+TARGET=list-test rbtree-test  set-test vector-test radix-tree-test fifo_test fifo_r_test
 all:$(TARGET)
 %.o:%.c
 	$(CC) -c $(CFLAGS) $^ -o $@
@@ -12,5 +12,9 @@ vector-test:vector-test.o
 	$(CC)  $^ $(LDFLAGS) -o $@
 radix-tree-test:radix-tree-test.o
 	$(CC)  $^ $(LDFLAGS) -o $@
+fifo_test:inttype-example.o
+	$(CC) $^ $(LDFLAGS) -o $@
+fifo_r_test:record-example.o
+	$(CC) $^ $(LDFLAGS) -o $@
 clean:
 	rm -rf *.o $(TARGET)

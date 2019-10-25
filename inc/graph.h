@@ -1,5 +1,6 @@
 #ifndef _GRAPH_H_
 #define _GRAPH_H_
+#if 0
 #include <stdbool.h>
 #include "utils.h"
 
@@ -55,5 +56,6 @@ void freeStates(states_t *states);
 void markNode(states_t *states, int v, state_t state);
 int isState(states_t const *states, int v, state_t state);
 int someIsState(states_t const *states, state_t state);
+#endif
 
 #endif  // _GRAPH_H_

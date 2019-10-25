@@ -1,3 +1,4 @@
+#if 0
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -243,3 +244,4 @@ fibonacci_heap_element_t *fibonacciHeapExtractMin(fibonacci_heap_t *fh) {
 
   return z;
 }
+#endif

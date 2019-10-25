@@ -1,6 +1,6 @@
 #ifndef _FIBONACCI_HEAP_H_
 #define _FIBONACCI_HEAP_H_
-
+#if 0
 enum {NIL = -1};
 /**
  * Represents an edge in the graph, with its tip located at distance key.
@@ -32,5 +32,5 @@ void fibonacciHeapAddRoot(fibonacci_heap_t *fh, fibonacci_heap_element_t *node, 
 void fibonacciHeapDeleteRoot(fibonacci_heap_t *fh, fibonacci_heap_element_t *node, int count);
 void fibonacciHeapInsert(fibonacci_heap_t *fh, fibonacci_heap_element_t *e);
 fibonacci_heap_element_t *fibonacciHeapExtractMin(fibonacci_heap_t *fh);
-
+#endif
 #endif  // _FIBONACCI_HEAP_H_

@@ -1,3 +1,4 @@
+#if 0
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -318,3 +319,4 @@ int someIsState(states_t const *states, state_t state) {
     }
     return false;
 }
+#endif
