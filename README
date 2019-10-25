@@ -2,4 +2,5 @@ porting linux kernel data structure to userspace. Very efficient and memory savi
 red-black tree
 radix tree
 list
+fifo
 
