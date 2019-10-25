@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-2.0 */
 #ifndef LIST_H_
 #define LIST_H_
 #include "types.h"

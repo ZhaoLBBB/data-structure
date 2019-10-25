@@ -1,3 +1,9 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+/*
+ * A generic kernel FIFO implementation
+ *
+ * Copyright (C) 2013 Stefani Seibold <stefani@seibold.net>
+ */
 #ifndef FIFO_H
 #define FIFO_H
 #include <unistd.h>
