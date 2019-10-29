@@ -28,4 +28,18 @@ typedef unsigned int bool;
 #define true 1
 #define false 0
 
+
+#define BUG() while(1)
+
+#define WRITE_ONCE(var, val) \
+    (*((volatile typeof(val) *)(&(var))) = (val))
+
+#define READ_ONCE(var) (*((volatile typeof(var) *)(&(var))))
+
+static inline void * ERR_PTR(long error_)
+{
+    return (void *) error_;
+}
+
+
 #endif
